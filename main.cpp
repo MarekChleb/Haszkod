@@ -13,7 +13,7 @@ vector<int> e_latency;// czas dostepu z data center do danego endpointu
 
 // first = id of the endpoint, second = id of cache server
 vector<vector<pair<int, int>>> cache_latency; // czas dostepu z endpointu do
-    // cache
+// cache
 
 vector<set<int>> cache_videos;
 vector<long long> cache_space_left;
@@ -68,23 +68,23 @@ void read_input() {
 }
 
 void sort_endpoints() {
-    void sort_endpoints() {
-        long priority = 0;
 
-        for (int e = 0; e < E; ++e) {
-            for (int i = 0; i < endpoint_request[e].size(); ++i) {
-                priority += endpoint_request[e][i].first;
+    long priority = 0;
 
-            }
-            for (int i = 0; i < cache_latency[e].size(); ++i) {
-                priority -= X * 1/cache_latency[e][i].first;
-            }
-            sorted_endpoints.push_back(make_pair(priority, e));
-            priority = 0;
+    for (int e = 0; e < E; ++e) {
+        for (int i = 0; i < endpoint_request[e].size(); ++i) {
+            priority += endpoint_request[e][i].first;
+
         }
-        sort(sorted_endpoints.begin(), sorted_endpoints.end());
-        reverse(sorted_endpoints.begin(), sorted_endpoints.end());
+        for (int i = 0; i < cache_latency[e].size(); ++i) {
+            priority -= X * 1 / cache_latency[e][i].first;
+        }
+        sorted_endpoints.push_back(make_pair(priority, e));
+        priority = 0;
     }
+    sort(sorted_endpoints.begin(), sorted_endpoints.end());
+    reverse(sorted_endpoints.begin(), sorted_endpoints.end());
+
 }
 
 void sort_videos() {
@@ -102,11 +102,15 @@ void sort_caches() {
 
 void insert_things() {
     int vid, cl;
-    for (int i = 0; sorted_endpoints.size(); i++) {
+    for (int i = 0; i < E; i++) {
+        cout << "sorted od " << i << " " << sorted_endpoints[i].first << ", "
+             << sorted_endpoints[i].second << endl;
+
         for (int j = 0; j < endpoint_request[i].size(); j++) {
             vid = endpoint_request[i][j].second;
             for (int k = 0; k < cache_latency[i].size(); k++) {
                 cl = cache_latency[i][k].second;
+                cout << "cl = " << cl << endl;
                 if (cache_space_left[cl] >= vsize[vid]) {
                     cache_videos[cl].insert(vid);
                     cache_space_left[cl] -= vsize[vid];
@@ -124,11 +128,14 @@ void print_output() {
         if (cache_space_left[i] != X) used_caches += 1;
     }
 
+    cout << used_caches << endl;
+
     for (int i = 0; i < cache_space_left.size(); ++i) {
         if (cache_space_left[i] != X) {
             cout << i;
-            for (auto k = cache_videos[i].begin(); k != cache_videos[i].end(); ++k) {
-                cout  << " " << *k;
+            for (auto k = cache_videos[i].begin();
+                 k != cache_videos[i].end(); ++k) {
+                cout << " " << *k;
             }
             cout << endl;
         }
