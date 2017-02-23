@@ -103,14 +103,14 @@ void sort_caches() {
 void insert_things() {
     int vid, cl;
     for (int i = 0; i < E; i++) {
-        //cout << "sorted od " << i << " " << sorted_endpoints[i].first << ", "
-          //   << sorted_endpoints[i].second << endl;
+       //cout << "sorted od " << i << " " << sorted_endpoints[i].first << ", "
+         //    << sorted_endpoints[i].second << endl;
 
-        for (int j = 0; j < E; j++) {
+        for (int j = 0; j < endpoint_request[i].size(); j++) {
             vid = endpoint_request[i][j].second;
-            for (int k = 0; k < E; k++) {
+            for (int k = 0; k < cache_latency[i].size(); k++) {
                 cl = cache_latency[i][k].second;
-               // cout << "cl = " << cl << endl;
+                //cout << "cl = " << cl << endl;
                 if (cache_space_left[cl] >= vsize[vid]) {
                     cache_videos[cl].insert(vid);
                     cache_space_left[cl] -= vsize[vid];
@@ -130,7 +130,7 @@ void print_output() {
 
     cout << used_caches << endl;
 
-    for (int i = 0; i < C; ++i) {
+    for (int i = 0; i < cache_space_left.size(); ++i) {
         if (cache_space_left[i] != X) {
             cout << i;
             for (auto k = cache_videos[i].begin();
