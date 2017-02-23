@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 #define ENDPOINTS_NUM 1000
 
@@ -10,7 +11,7 @@ vector<int> vsize;
 vector<int> e_latency;// czas dostepu z data center do danego endpointu
 
 // first = id of the endpoint, second = id of cache server
-vector<vector<int>> cache_latency; // czas dostepu z endpointu do
+vector<vector<pair<int, int>>> cache_latency; // czas dostepu z endpointu do
     // cache
 
 vector<vector<pair<int, int>>> endpoint_request;
@@ -20,11 +21,10 @@ void read_endpoint(int i) {
     scanf("%d", &e_latency[i]);
     scanf("%d", &num);
 
-    cache_latency[i].resize(1000);
     int cache_nr, lat;
     for (int j = 0; j < num; j++) {
         scanf("%d%d", &cache_nr, &lat);
-        cache_latency[i][cache_nr] = lat;
+        cache_latency[i].push_back(make_pair(lat, cache_nr));
     }
 }
 
@@ -40,7 +40,7 @@ void read_input() {
     for (int i = 0; i < V; i++) {
         scanf("%d", &vsize[i]);
     }
-
+    cache_latency.resize(ENDPOINTS_NUM);
     e_latency.resize(ENDPOINTS_NUM);
     for (int i = 0; i < E; i++) {
         read_endpoint(i);
@@ -55,15 +55,28 @@ void read_input() {
 }
 
 void sort_endpoints() {
-    
+
+}
+
+void sort_videos() {
+    for (int i = 0; i < E; i++) {
+        sort(endpoint_request[i].begin(), endpoint_request[i].end());
+    }
+}
+
+void sort_caches() {
+    for (int i = 0; i < E; i++) {
+        sort(cache_latency[i].begin(), cache_latency[i].end());
+    }
 }
 
 int main() {
     read_input();
     sort_endpoints();
-    for (diosa) {
-        sort_video(i);
-        sort_cache(i);
+    sort_videos();
+    sort_caches();
+    for () { //dla każdego endpointu
+
         insert_things(i);
     }
     print_output();
